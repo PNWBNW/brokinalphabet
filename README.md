@@ -31,18 +31,27 @@ BroKinAlphaBet isn’t just a toolchain. It’s an experimental framework for co
 
 ```
 bro_kin_alpha_bet/
-├── public/               # Frontend UI
-├── src/
-│   ├── llm/              # Model wrappers (openai.js, anthropic.js, etc.)
-│   ├── routes/           # API routes (llm_router.js)
-│   ├── utils/            # Prompt templates, logger, etc.
-│   └── server.js         # Express app
-├── .env                  # (Git-ignored) API keys + settings
+├── public/                     # Frontend static files
+│   └── index.html              # Prompt input form & JS UI
+│
+├── src/                        # Backend source code
+│   ├── server.js               # Main Express app
+│   ├── routes/
+│   │   └── llmRouter.js        # POST /api/run-loop handler
+│   ├── llm/                    # Model callers (OpenAI, Claude, etc.)
+│   │   ├── openai.js           # OpenAI wrapper
+│   │   ├── anthropic.js        # Claude wrapper
+│   │   └── ...                 # Add more LLM clients
+│   ├── utils/
+│   │   ├── promptTemplates.js  # Creator / Engineer / Critic prompt templates
+│   │   └── logger.js           # Optional: Output logging
+│   └── config.js               # Centralized config loader (env vars, API URLs)
+│
+├── .env                        # (Not committed) API keys and secrets
 ├── .gitignore
 ├── package.json
-├── LICENSE
-└── README.md
-```
+├── README.md
+└── LICENSE
 
 ---
 
