@@ -4,9 +4,8 @@ const router = express.Router();
 const { getPromptTemplate } = require('../utils/prompt_templates');
 const { call_openai } = require('../llm/openai');
 const { call_claude } = require('../llm/anthropic');
-// Add more wrappers as needed (e.g. mistral, groq, gemini)
-
 const { logRoleOutput, logError } = require('../utils/logger');
+const { gateCheck } = require('../token/gate_check');  // << NFT gating middleware
 
 // === Role-to-model assignments ===
 const roleModelMap = {
@@ -25,7 +24,8 @@ const modelRegistry = {
   // gemini: call_gemini
 };
 
-router.post('/run-loop', async (req, res) => {
+// === NFT-Gated LLM Loop ===
+router.post('/run-loop', gateCheck, async (req, res) => {
   const { prompt, iterations } = req.body;
 
   if (!prompt || !iterations || iterations < 1) {
@@ -52,7 +52,10 @@ router.post('/run-loop', async (req, res) => {
       }
     }
 
-    res.json({ output: current });
+    res.json({
+      output: current,
+      wallet: req.verifiedWallet  // include verified wallet in response
+    });
 
   } catch (err) {
     logError('run-loop', err);
