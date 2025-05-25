@@ -1,0 +1,22 @@
+bro_kin_alpha_bet/
+├── public/                     # Frontend static files
+│   └── index.html              # Prompt input form & JS UI
+│
+├── src/                        # Backend source code
+│   ├── server.js               # Main Express app
+│   ├── routes/
+│   │   └── llmRouter.js        # POST /api/run-loop handler
+│   ├── llm/                    # Model callers (OpenAI, Claude, etc.)
+│   │   ├── openai.js           # OpenAI wrapper
+│   │   ├── anthropic.js        # Claude wrapper
+│   │   └── ...                 # Add more LLM clients
+│   ├── utils/
+│   │   ├── promptTemplates.js  # Creator / Engineer / Critic prompt templates
+│   │   └── logger.js           # Optional: Output logging
+│   └── config.js               # Centralized config loader (env vars, API URLs)
+│
+├── .env                        # (Not committed) API keys and secrets
+├── .gitignore
+├── package.json
+├── README.md
+└── LICENSE
