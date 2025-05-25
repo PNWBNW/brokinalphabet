@@ -3,23 +3,26 @@ const router = express.Router();
 
 const { getPromptTemplate } = require('../utils/prompt_templates');
 const { call_openai } = require('../llm/openai');
-const { call_claude } = require('../llm/anthropic'); // optional if already built
-// Add more wrappers as needed...
+const { call_claude } = require('../llm/anthropic');
+// Add more wrappers as needed (e.g. mistral, groq, gemini)
 
-// Role-to-model map (pulls from .env or define here)
+const { logRoleOutput, logError } = require('../utils/logger');
+
+// === Role-to-model assignments ===
 const roleModelMap = {
-  creator: 'openai',     // use GPT-4o for ideation
-  engineer: 'claude',    // use Claude Opus for logic structuring
-  critic: 'openai'       // use GPT-4o again for risk analysis
+  creator: 'openai',
+  engineer: 'claude',
+  critic: 'openai'
 };
 
-// Model function registry
+// === Model function registry ===
 const modelRegistry = {
   openai: call_openai,
   claude: call_claude,
   // mistral: call_mistral,
   // groq: call_groq,
   // together: call_together,
+  // gemini: call_gemini
 };
 
 router.post('/run-loop', async (req, res) => {
@@ -32,24 +35,27 @@ router.post('/run-loop', async (req, res) => {
   try {
     let current = prompt;
 
-    for (let i = 0; i < iterations; i++) {
+    for (let cycle = 0; cycle < iterations; cycle++) {
       for (const role of ['creator', 'engineer', 'critic']) {
         const modelKey = roleModelMap[role];
         const modelCaller = modelRegistry[modelKey];
 
         if (!modelCaller) {
-          throw new Error(`No model implementation for: ${modelKey}`);
+          throw new Error(`No model implementation found for: ${modelKey}`);
         }
 
         const rolePrompt = getPromptTemplate(role, current);
-        current = await modelCaller(rolePrompt); // role output becomes input for next
+        const roleResponse = await modelCaller(rolePrompt);
+
+        logRoleOutput(role, modelKey, rolePrompt, roleResponse, cycle + 1);
+        current = roleResponse;
       }
     }
 
     res.json({ output: current });
 
   } catch (err) {
-    console.error('[run-loop error]', err);
+    logError('run-loop', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
