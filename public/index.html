@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BroKinAlphaBet – Chain Runner</title>
+  <style>
+    label { display: block; margin-top: 10px; }
+    input, textarea { margin-bottom: 10px; width: 100%; }
+    #output { white-space: pre-wrap; background: #f4f4f4; padding: 1em; margin-top: 1em; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>BroKinAlphaBet – Chain Runner</h1>
+  <form id="llm-form">
+    <label for="promptInput">Enter your prompt:</label>
+    <textarea id="promptInput" rows="4" required></textarea>
+
+    <label for="iterations">Number of Loops (Iterations):</label>
+    <input type="number" id="iterations" min="1" value="1" required />
+
+    <button type="submit">Run LLM Chain</button>
+  </form>
+
+  <div id="output"></div>
+
+  <script>
+    document.getElementById('llm-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const prompt = document.getElementById('promptInput').value;
+      const iterations = parseInt(document.getElementById('iterations').value, 10);
+
+      const outputEl = document.getElementById('output');
+      outputEl.textContent = 'Running loop...';
+
+      try {
+        const response = await fetch('/api/run-loop', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ prompt, iterations })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          outputEl.textContent = `Final output:\n\n${result.output}`;
+        } else {
+          outputEl.textContent = `Error: ${result.error || 'Unknown failure'}`;
+        }
+      } catch (err) {
+        outputEl.textContent = 'Unexpected error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
