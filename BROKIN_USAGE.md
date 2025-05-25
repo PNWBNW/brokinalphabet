@@ -69,7 +69,7 @@ For full licensing terms, refer to `LICENSE`.
 ## Contact
 
 For commercial use coordination, reach out at:  
-**proven.national.workers@protonmail.com** (placeholder)
+**provennationalworkers@gmail.com**
 
 ---
 
