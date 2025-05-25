@@ -3,8 +3,7 @@ bro_kin_alpha_bet/
 │   ├── gate_check.js           # Middleware or helper to validate NFT ownership
 │   ├── verify_signature.js     # Verifies wallet signature for login/auth
 │   └── nft_config.js           # Chain & contract config (contract address, ABI, provider)
-├── public/                     # Frontend static files
-│   └── index.html              # Prompt input form & JS UI
+├── index.html                  # Prompt input form & JS UI
 │
 ├── src/                        # Backend source code
 │   ├── server.js               # Main Express app
