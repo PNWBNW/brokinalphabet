@@ -108,7 +108,7 @@ See [`LICENSE`](./LICENSE)
 
 Created by [Proven National Workers]
 Inspired by the question:  
-**What happens when AIs start thinking together—on purpose?**
+**What happens when AIs start thinking together creatively—on purpose?**
 
 ---
 
