@@ -1,0 +1,50 @@
+# === Node.js core ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+.env
+.env.local
+.env.*.local
+
+# === Logs and temp files ===
+logs/
+*.log
+*.tmp
+*.swp
+*.pid
+
+# === OS artifacts ===
+.DS_Store
+Thumbs.db
+
+# === Git-specific ===
+*.orig
+.idea/
+.vscode/
+.history/
+
+# === Frontend output (optional static builds) ===
+build/
+public/dist/
+public/*.map
+
+# === Optional: Deployed artifacts ===
+*.zip
+*.tar.gz
+.cache/
+
+# === Coverage reports ===
+coverage/
+*.lcov
+
+# === Debug tools ===
+debug.log
+pids.log
+test-results/
+
+# === Custom additions ===
+# Ignore SDK model keys or custom export dumps
+sdk_keys.json
+user_keys_store.json
